@@ -235,15 +235,34 @@ IPadStatus.prototype.search = function (text) {
      */
     var showAlert = function (msg, level) {
         $('#alert').html('\
-<div class="alert alert-' + level + ' alert-dismissible" role="alert">\
-    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> ' + msg + '\
+<div class="alert alert-' + level + '" role="alert">\
+    ' + msg + ' <a href="javascript:" id="reload">刷新</a>\
 </div>');
+        $('#reload').on('click', function () {
+            reload();
+        });
     };
     /**
      * IPadStatus对象实例
      * @type {IPadStatus}
      */
     var iPadStatus;
+    /**
+     * 平滑滚动到页面顶部
+     */
+    var scorllToTop = function () {
+        $('body').animate({scrollTop: 0}, 500);
+    };
+    /**
+     * 设置主体部分内容
+     * @param {string} title 标题
+     * @param {string} html 主体部分HTML
+     */
+    var setContent = function (title, html) {
+        $('#main').html(html);
+        $('#title').text(title);
+        scorllToTop();
+    }
     /**
      * 更换为几种内置类型的内容
      * @param {string} type 显示类型，例如：'useful', 'IPAD', 'MINI', 'IMAC', 'PBL', 'all'
@@ -300,8 +319,7 @@ IPadStatus.prototype.search = function (text) {
                 html += iPadStatus.view(iPadStatus.match(type, ''), type + ' 所有');
                 break;
         }
-        $('#main').html(html);
-        $('#title').text(title);
+        setContent(title, html);
         return true;
     };
     /**
@@ -310,8 +328,7 @@ IPadStatus.prototype.search = function (text) {
      */
     var changeContentToSearch = function (text) {
         iPadStatus.sortByStateDate();
-        $('#main').html(iPadStatus.view(iPadStatus.search(text), '模糊搜索：' + text));
-        $('#title').text('设备状态搜索');
+        setContent('设备状态搜索', iPadStatus.view(iPadStatus.search(text), '模糊搜索：' + text));
     };
     /**
      * 获取hash除去标识符以后的内容
@@ -366,6 +383,7 @@ IPadStatus.prototype.search = function (text) {
         } else {
             location.hash = '#s/' + $(this).find('input').val();
         }
+        $('button[class="navbar-toggle"][aria-expanded="true"]').click();
     });
     $(window).on('hashchange', onhashchange);
     reload();
