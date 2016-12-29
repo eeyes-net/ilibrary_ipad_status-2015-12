@@ -235,9 +235,12 @@ IPadStatus.prototype.search = function (text) {
      */
     var showAlert = function (msg, level) {
         $('#alert').html('\
-<div class="alert alert-' + level + ' alert-dismissible" role="alert">\
-    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> ' + msg + '\
+<div class="alert alert-' + level + '" role="alert">\
+    ' + msg + ' <a href="javascript:" id="reload">刷新</a>\
 </div>');
+        $('#reload').on('click', function () {
+            reload();
+        });
     };
     /**
      * IPadStatus对象实例
