@@ -248,6 +248,22 @@ IPadStatus.prototype.search = function (text) {
      */
     var iPadStatus;
     /**
+     * 平滑滚动到页面顶部
+     */
+    var scorllToTop = function () {
+        $('body').animate({scrollTop: 0}, 500);
+    };
+    /**
+     * 设置主体部分内容
+     * @param {string} title 标题
+     * @param {string} html 主体部分HTML
+     */
+    var setContent = function (title, html) {
+        $('#main').html(html);
+        $('#title').text(title);
+        scorllToTop();
+    }
+    /**
      * 更换为几种内置类型的内容
      * @param {string} type 显示类型，例如：'useful', 'IPAD', 'MINI', 'IMAC', 'PBL', 'all'
      * @return {boolean} 类型是否支持
@@ -303,8 +319,7 @@ IPadStatus.prototype.search = function (text) {
                 html += iPadStatus.view(iPadStatus.match(type, ''), type + ' 所有');
                 break;
         }
-        $('#main').html(html);
-        $('#title').text(title);
+        setContent(title, html);
         return true;
     };
     /**
@@ -313,8 +328,7 @@ IPadStatus.prototype.search = function (text) {
      */
     var changeContentToSearch = function (text) {
         iPadStatus.sortByStateDate();
-        $('#main').html(iPadStatus.view(iPadStatus.search(text), '模糊搜索：' + text));
-        $('#title').text('设备状态搜索');
+        setContent('设备状态搜索', iPadStatus.view(iPadStatus.search(text), '模糊搜索：' + text));
     };
     /**
      * 获取hash除去标识符以后的内容
