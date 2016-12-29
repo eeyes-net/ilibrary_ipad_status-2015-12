@@ -369,6 +369,7 @@ IPadStatus.prototype.search = function (text) {
         } else {
             location.hash = '#s/' + $(this).find('input').val();
         }
+        $('button[class="navbar-toggle"][aria-expanded="true"]').click();
     });
     $(window).on('hashchange', onhashchange);
     reload();
